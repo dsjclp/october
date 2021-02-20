@@ -14,17 +14,25 @@ scopeValue = "{{ :scope }}"
 displayColumn = "name"
 noRecordsMessage = "No records found"
 detailsPage = "evenement"
-detailsKeyColumn = "id"
-detailsUrlParameter = "id"
+detailsKeyColumn = "slug"
+detailsUrlParameter = "slug"
 pageNumber = "{{ :page }}"
 ==
+
+<?php
+use  Dlp\Events\Models\Event;
+
+function onStart()
+{
+$this['events'] = Event::where('time_begin', '>=', now())->orderBy('time_begin','desc')->take(5)->get();
+$this['oldevents'] = Event::where('time_end', '<', now())->orderBy('time_begin','asc')->take(5)->get();
+
+
+}
+?>
+==
+
 {% component 'session' %}{% partial 'site/sp-header' %}
-{% set records = builderList.records %}
-{% set displayColumn = builderList.displayColumn %}
-{% set noRecordsMessage = builderList.noRecordsMessage %}
-{% set detailsPage = builderList.detailsPage %}
-{% set detailsKeyColumn = builderList.detailsKeyColumn %}
-{% set detailsUrlParameter = builderList.detailsUrlParameter %}
 
 
 <section class="team" id="team">
@@ -43,17 +51,16 @@ pageNumber = "{{ :page }}"
             <!-- /section title -->
         </div>
         <div class="row">
-            {% for record in records %}
+            {% for record in events %}
             
             <!-- team member -->
             <div class="col-lg-4 col-md-6">
                 <div class="team-member text-center">
                     <div class="member-photo">
                         <!-- member photo -->
-                        <img loading="lazy" class="img-fluid" src="{{ record.poster.path }}"
-                            alt="Meghna">
+                        <img loading="lazy" class="img-fluid" src="{{ record.poster.thumb(1170,880, {'mode':'crop'}) }}"
+                            alt="Poster">
                         <!-- /member photo -->
-
                         <!-- member social profile -->
                         <div class="mask">
                             <ul class="clearfix">
@@ -65,14 +72,13 @@ pageNumber = "{{ :page }}"
 
                     <!-- member name & designation -->
                     <div class="member-content">
-                        <h3>{{ record.name }}</h3>
-                        <span>
+                        <h3><a href="{{ detailsPage|page({ (detailsUrlParameter): attribute(record, detailsKeyColumn) }) }}">{{ record.name }}</a></h3>
+                       <p> à
                             {% for location in record.locations %}
-                            <a href="/lieu/{{location.slug}}">{{location.name}}</a>,
+                            <a href="/lieu/{{location.slug}}">{{location.name}}</a>
                             {% endfor%}
-                        </span>
-                        <p>
-                            {{record.description}}
+                        
+                            le {{ record.time_begin|frenchDate('%e %B %Y') }} {{record.description|raw}}
                         </p>
                     </div>
                     <!-- /member name & designation -->
@@ -105,27 +111,23 @@ pageNumber = "{{ :page }}"
         </div>
         <div class="row">
 
-            <div class="col-md-4 text-center d-none d-md-block">
-                <img loading="lazy" src="{{ 'assets/images/about/member.jpg'|theme }}" class="img-fluid inline-block" alt="">
-            </div>
-
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="row text-center">
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-4 col-sm-6">
                         <div class="service-item">
                             <a href="/partitions"><i class="tf-ion-ios-book-outline"></i></a>
                             <h4>Partitions</h4>
                             <p>Accédez aux partitions pour votre instrument, ainsi qu'à la liste actuelle des séries.</p>
                         </div>
                     </div><!-- END COL -->
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-4 col-sm-6">
                         <div class="service-item">
                             <a href="/messages"><i class="tf-ion-ios-information-outline"></i></a>
                             <h4>Messages</h4>
                             <p>Prenez connaissance des dernières nouvelles de la Banda, et apportez vos propres commentaires.</p>
                         </div>
                     </div><!-- END COL -->
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-4 col-sm-6">
                         <div class="service-item">
                             <a href="/lieux"><i class="tf-ion-ios-navigate-outline"></i></a>
                             <h4>Lieux et cartes</h4>
@@ -146,9 +148,9 @@ pageNumber = "{{ :page }}"
             <!-- section title -->
             <div class="col-xl-6 col-lg-8">
                 <div class="title text-center ">
-                    <h2>Photos des événements passés</h2>
+                    <h2>Les événements passés</h2>
                     <p>
-                        Pour le plaisir !
+                        Avec les photos !
                     </p>
                     <div class="border"></div>
                 </div>
@@ -156,14 +158,14 @@ pageNumber = "{{ :page }}"
             <!-- /section title -->
         </div>
         <div class="row">
-            {% for record in records %}
+            {% for record in oldevents %}
             
             <!-- team member -->
             <div class="col-lg-4 col-md-6">
                 <div class="team-member text-center">
                     <div class="member-photo">
                         <!-- member photo -->
-                        <img loading="lazy" class="img-fluid" src="{{ record.poster.path }}"
+                        <img loading="lazy" class="img-fluid" src="{{ record.poster.thumb(1170,880, {'mode':'crop'}) }}"
                             alt="Meghna">
                         <!-- /member photo -->
 
@@ -185,7 +187,7 @@ pageNumber = "{{ :page }}"
                             {% endfor%}
                         </span>
                         <p>
-                            {{record.description}}
+                            {{ record.description |raw }}
                         </p>
                     </div>
                     <!-- /member name & designation -->

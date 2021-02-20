@@ -1268,7 +1268,7 @@ a:focus, a:hover {
 }
 
 .portfolio-block .caption .search-icon {
-  background: #E12D06;
+  background: #848484;;
   color: #fff;
   display: inline-block;
   height: 45px;
@@ -1489,7 +1489,7 @@ a:focus, a:hover {
 }
 
 .team .member-photo .mask {
-  background: #E12D06;
+  background: #848484;;
   position: absolute;
   width: 100%;
   bottom: 0;
@@ -1793,7 +1793,7 @@ a:focus, a:hover {
   right: 0;
   height: 100%;
   width: 50px;
-  background: #E12D06;
+  background: #848484;
   border: 0;
 }
 

@@ -21,6 +21,10 @@ fields:
         size: ''
         span: auto
         type: textarea
+    serie:
+        label: Série
+        span: auto
+        type: number
 tabs:
     fields:
         gallery:

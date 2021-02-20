@@ -1,4 +1,7 @@
 columns:
     name:
-        label: name
+        label: Titre
         type: text
+    serie:
+        label: Série
+        type: number

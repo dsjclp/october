@@ -3,27 +3,19 @@ url = "/photos"
 layout = "default"
 is_hidden = 0
 
-[builderList]
-modelClass = "Dlp\Events\Models\Event"
-scope = "-"
-scopeValue = "{{ :scope }}"
-displayColumn = "name"
-noRecordsMessage = "No records found"
-detailsPage = "-"
-detailsUrlParameter = "id"
-pageNumber = "{{ :page }}"
 ==
+<?php
+use  Dlp\Events\Models\Event;
+
+function onStart()
+{
+$this['events'] = Event::where('public', '=', 1)->orderBy('time_begin','asc')->take(5)->get();
+
+}
+?>
+==
+
 {% partial 'site/sp-header' %}
-
-
-{% set records = builderList.records %}
-{% set displayColumn = builderList.displayColumn %}
-{% set noRecordsMessage = builderList.noRecordsMessage %}
-{% set detailsPage = builderList.detailsPage %}
-{% set detailsKeyColumn = builderList.detailsKeyColumn %}
-{% set detailsUrlParameter = builderList.detailsUrlParameter %}
-
-
 
 <section class="portfolio section-sm" id="portfolio">
     <div class="container-fluid">
@@ -33,8 +25,7 @@ pageNumber = "{{ :page }}"
                 <div class="title text-center">
                     <h2>Les photos des derniers événements</h2>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro, veritatis. Lorem ipsum dolor
-                        sit amet, consectetur adipisicing elit. Minima, vitae?
+                        Petit aperçu de la banda, sans le son...
                     </p>
                     <div class="border"></div>
                 </div>
@@ -47,31 +38,31 @@ pageNumber = "{{ :page }}"
 
                 <div class="portfolio-filter">
                     <button type="button" data-filter="all">Toutes</button>
-                    {% for record in records %}
-                    <button type="button" data-filter="{{record.name}}">{{record.name}}</button>
+                    {% for event in events %}
+                    <button type="button" data-filter="{{event.name}}">{{event.name}}</button>
                     {% endfor%}
                 </div>
 
                 <div class="row">
                     <div class="col-12">
                         <div class="filtr-container">
-                            {% for record in records %}
-                        {% for image in record.gallery %}
-                            <div class="col-md-3 col-sm-6 col-xs-6 filtr-item " data-category="{{record.name}}">
-                                <div class="portfolio-block">
-                                    <img class="img-fluid" src="{{image.thumb(400,200,{'mode':'crop'})}}"
-                                        alt="">
-                                    <div class="caption">
-                                        <a class="search-icon"
-                                            href="{{image.thumb(1200,800,{'mode':'crop'})}}"
-                                            data-lightbox="image-1">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </a>
+                            {% for event in events %}
+                                {% for image in event.gallery %}
+                                    <div class="col-md-3 col-sm-6 col-xs-6 filtr-item " data-category="{{event.name}}">
+                                        <div class="portfolio-block">
+                                            <img class="img-fluid" src="{{image.thumb(400,200,{'mode':'crop'})}}"
+                                                alt="">
+                                            <div class="caption">
+                                                <a class="search-icon"
+                                                    href="{{image.thumb(1200,800,{'mode':'crop'})}}"
+                                                    data-lightbox="image-1">
+                                                    <i class="tf-ion-ios-search-strong"></i>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        {% endfor%}
-                        {% endfor%}
+                                {% endfor%}
+                            {% endfor%}
                         </div>
                     </div>
                 </div>

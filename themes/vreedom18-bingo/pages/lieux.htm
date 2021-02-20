@@ -58,8 +58,7 @@ pageNumber = "{{ :page }}"
             <div class="content">
                 <h3><a href="{{ 'single-post'|page }}">{{record.name}}</a></h3>
                 <p>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                    squid. 3 wolf moon officia aute, non skateboard dolor brunch.
+                    {{ record.description |raw }}
                 </p>
 
                 {# Use spaceless tag to remove spaces inside the A tag. #}

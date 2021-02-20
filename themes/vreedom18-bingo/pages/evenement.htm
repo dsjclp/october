@@ -1,19 +1,19 @@
 title = "Evénement"
-url = "/evenement/:id"
+url = "/evenement/:slug"
 layout = "default"
 is_hidden = 0
-
-[builderDetails]
-modelClass = "Dlp\Events\Models\Event"
-identifierValue = "{{ :id }}"
-modelKeyColumn = "id"
-displayColumn = "name"
-notFoundMessage = "Record not found"
 
 [inscriptionform]
 
 [session]
 security = "all"
+
+[builderDetails]
+modelClass = "Dlp\Events\Models\Event"
+identifierValue = "{{ :slug }}"
+modelKeyColumn = "slug"
+displayColumn = "slug"
+notFoundMessage = "Record not found"
 ==
 {% partial 'site/sp-header' %}
 
@@ -60,12 +60,11 @@ security = "all"
                     <i class="tf-ion-ios-navigate-outline"></i>
                     <h3>Où</h3>
                     <div>
-
-                        {{record}}
                         <span class="counter">
                             à {% for location in record.locations %}
                             {{location.name}}
-                            {% endfor%}</span>
+                            {% endfor%}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -112,7 +111,18 @@ security = "all"
         <div class="row">
 
             <div class="col-md-6 mb-4 mb-md-0">
-                <img loading="lazy" src="https://yarig.fr/undraw_personal_info_0okl.svg" class="img-fluid" alt="">
+                
+
+                {% if record.poster %}'
+                <img loading="lazy" class="img-fluid" src="{{ record.poster.path }}" alt="">
+            {% else %}
+                <img class="img-fluid px-3 px-sm-4" style="width: 25rem;" src="{{'assets/images/undraw_online_friends_x73e.svg'|theme}}" alt="">
+            {% endif %}
+
+
+
+
+
             </div>
             <div class="col-md-6">
                 <ul class="checklist">
@@ -150,7 +160,7 @@ security = "all"
             <!-- Login Image -->
             <div class="contact-details col-md-6 ">
                 <div class="title text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="https://yarig.fr/undraw_Access_account_re_8spm.svg" alt="">           
+                    <img loading="lazy" src="{{'assets/images/undraw_election_day_w842.svg'|theme}}" class="img-fluid" style="width: 25rem;" alt="">           
                 </div>
             </div>
             <!-- / End Login Image -->
