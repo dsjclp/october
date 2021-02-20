@@ -57,10 +57,15 @@ $this['oldevents'] = Event::where('time_end', '<', now())->orderBy('time_begin',
             <div class="col-lg-4 col-md-6">
                 <div class="team-member text-center">
                     <div class="member-photo">
-                        <!-- member photo -->
+                        {% if record.poster %}
+                        <!-- photo -->
                         <img loading="lazy" class="img-fluid" src="{{ record.poster.thumb(1170,880, {'mode':'crop'}) }}"
                             alt="Poster">
-                        <!-- /member photo -->
+                        <!-- /photo -->
+                        {% else %}
+                        <img loading="lazy" class="img-fluid" src="{{'assets/images/undraw_compose_music_ovo2.svg'|theme}}"
+                        alt="Poster">
+                        {% endif %}
                         <!-- member social profile -->
                         <div class="mask">
                             <ul class="clearfix">
@@ -164,10 +169,15 @@ $this['oldevents'] = Event::where('time_end', '<', now())->orderBy('time_begin',
             <div class="col-lg-4 col-md-6">
                 <div class="team-member text-center">
                     <div class="member-photo">
-                        <!-- member photo -->
+                        {% if record.poster %}
+                        <!-- photo -->
                         <img loading="lazy" class="img-fluid" src="{{ record.poster.thumb(1170,880, {'mode':'crop'}) }}"
-                            alt="Meghna">
-                        <!-- /member photo -->
+                            alt="Poster">
+                        <!-- /photo -->
+                        {% else %}
+                        <img loading="lazy" class="img-fluid" src="{{'assets/images/undraw_compose_music_ovo2.svg'|theme}}"
+                        alt="Poster">
+                        {% endif %}
 
                         <!-- member social profile -->
                         <div class="mask">
@@ -180,14 +190,13 @@ $this['oldevents'] = Event::where('time_end', '<', now())->orderBy('time_begin',
 
                     <!-- member name & designation -->
                     <div class="member-content">
-                        <h3>{{ record.name }}</h3>
-                        <span>
+                        <h3><a href="{{ detailsPage|page({ (detailsUrlParameter): attribute(record, detailsKeyColumn) }) }}">{{ record.name }}</a></h3>
+                        <p>à
                             {% for location in record.locations %}
                             <a href="/lieu/{{location.slug}}">{{location.name}}</a>,
                             {% endfor%}
-                        </span>
-                        <p>
-                            {{ record.description |raw }}
+
+                            le {{ record.time_begin|frenchDate('%e %B %Y') }} {{record.description|raw}}
                         </p>
                     </div>
                     <!-- /member name & designation -->

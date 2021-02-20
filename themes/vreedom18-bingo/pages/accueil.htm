@@ -86,7 +86,7 @@ $this['event'] = Event::where('public', '=', 1)->where('time_begin', '>', now())
                     {% if event.poster %}'
                         <img loading="lazy" class="img-fluid" src="{{ event.poster.path }}" alt="">
                     {% else %}
-                        <img class="img-fluid px-3 px-sm-4" style="width: 25rem;" src="https://yarig.fr/undraw_compose_music_ovo2.svg" alt="">
+                        <img class="img-fluid px-3 px-sm-4" style="width: 25rem;" src="{{'assets/images/undraw_compose_music_ovo2.svg'|theme}}" alt="">      
                     {% endif %}
                 </div>
             </div>
