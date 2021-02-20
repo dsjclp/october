@@ -1,0 +1,50 @@
+title = "Evénements"
+url = "/evenements"
+layout = "default"
+is_hidden = 0
+
+==
+
+<?
+
+use  Dlp\Events\Models\Event;
+
+function onStart()
+{
+
+//$this['events'] = Event::orderBy('time_begin','desc')->paginate(1);
+//$this['events'] = Event::orderBy('time_begin','asc')->take(2)->get();
+$this['name'] = Input::get('name');
+$this['events'] = Event::where('name','like', $this['name'])->get();
+}
+
+?>
+
+==
+
+{% partial 'site/sp-header' %}
+
+<section class="blog-details section">
+    <div class="container">
+
+        <ul class="record-list">
+            {% for event in events %}
+                <li>
+                    {{event.time_begin}}
+                    {# Use spaceless tag to remove spaces inside the A tag. #}
+                    {% spaceless %}
+                    <a href="evenement\{{event.id}}">{{ event.name }}</a>
+                    {% endspaceless %}
+                </li>
+            {% else %}
+                <li class="no-data">{{ 'No Event' }}</li>
+            {% endfor %}
+        </ul>
+
+</div>
+
+<div>
+    {{events.render|raw}}
+</div>
+
+</section>

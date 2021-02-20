@@ -1,0 +1,32 @@
+title = "Genre"
+url = "/genre/:slug"
+layout = "default"
+is_hidden = 0
+
+[builderDetails]
+modelClass = "Dlp\Events\Models\Genre"
+identifierValue = "{{ :slug }}"
+modelKeyColumn = "slug"
+displayColumn = "genre_title"
+notFoundMessage = "Record not found"
+==
+{% partial 'site/sp-header' %}
+{% set record = builderDetails.record %}
+{% set displayColumn = builderDetails.displayColumn %}
+{% set notFoundMessage = builderDetails.notFoundMessage %}
+
+{% if record %}
+    {{ attribute(record, displayColumn) }}
+    
+    <h3>Evénements</h3>
+    
+    <ul class = "">
+        {% for event in record.events %}
+            {{event.name}}<br>
+        {% endfor%}
+    </ul>
+            
+            
+{% else %}
+    {{ notFoundMessage }}
+{% endif %}
