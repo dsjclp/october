@@ -26,18 +26,16 @@ pageNumber = "{{ :page }}"
                     <!-- Post Content -->
                     <div class="post-content">
                         <h3>Vos partitions</h3>
-                        <h3>par série</h3>
-                        
-                        <article class="post">
-                            <div class="post-content">
-                                <!-- Search Form -->
-                                <form class="comment-form" action="{{ 'search' | page }}" method="get">
-                                    <input class="form-control" name="q" type="text" placeholder="Vous recherchez quelque chose sur ce site ? Saisissez votre recherche ici" autocomplete="off">
-                                    <button class="btn btn-secondary" type="submit"><i class="tf-ion-ios-search-strong"></i></button>
-                                </form>
-                                <!-- ./End Search Form -->
-                            </div>
-                        </article>
+                        <h4>par série</h4>
+                        <div class="widget-search widget">
+                            <form action="{{ 'search' | page }}" method="get">
+                                <!-- Search bar -->
+                                <input class="form-control shadow-none" type="text" placeholder="Recherchez..." name="q">
+                                <button type="submit" class="widget-search-btn">
+                                    <i class="tf-ion-ios-search"></i>
+                                </button>
+                            </form>
+                        </div>
                         
 {% set records = builderList.records %}
 {% set displayColumn = builderList.displayColumn %}

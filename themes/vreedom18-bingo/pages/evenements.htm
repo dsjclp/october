@@ -1,50 +1,90 @@
-title = "Evénements"
+title = "Evenements"
 url = "/evenements"
 layout = "default"
 is_hidden = 0
 
+[builderList]
+modelClass = "Dlp\Events\Models\Event"
+scope = "-"
+scopeValue = "{{ :scope }}"
+displayColumn = "name"
+noRecordsMessage = "No records found"
+detailsPage = "evenement"
+detailsKeyColumn = "slug"
+detailsUrlParameter = "slug"
+pageNumber = "{{ :page }}"
+
+[siteSearchInclude]
 ==
-
-<?
-
-use  Dlp\Events\Models\Event;
-
-function onStart()
-{
-
-//$this['events'] = Event::orderBy('time_begin','desc')->paginate(1);
-//$this['events'] = Event::orderBy('time_begin','asc')->take(2)->get();
-$this['name'] = Input::get('name');
-$this['events'] = Event::where('name','like', $this['name'])->get();
-}
-
-?>
-
-==
-
 {% partial 'site/sp-header' %}
+{% set records = builderList.records %}
+{% set displayColumn = builderList.displayColumn %}
+{% set noRecordsMessage = builderList.noRecordsMessage %}
+{% set detailsPage = builderList.detailsPage %}
+{% set detailsKeyColumn = builderList.detailsKeyColumn %}
+{% set detailsUrlParameter = builderList.detailsUrlParameter %}
 
-<section class="blog-details section">
+
+<section class="team" id="team">
     <div class="container">
+        <div class="row justify-content-center">
+            <!-- section title -->
+            <div class="col-xl-6 col-lg-8">
+                <div class="title text-center ">
+                    <h2>Les prochains événements</h2>
+                    <h4>
+                        Inscrivez vous !
+                    </h4>
+                    <div class="border"></div>
+                </div>
+            </div>
+            <!-- /section title -->
+        </div>
+        <div class="row">
+            {% for record in records %}
+            
+            <!-- team member -->
+            <div class="col-lg-4 col-md-6">
+                <div class="team-member text-center">
+                    <div class="member-photo">
+                        {% if record.poster %}
+                        <!-- photo -->
+                        <img loading="lazy" class="img-fluid" src="{{ record.poster.thumb(1170,880, {'mode':'crop'}) }}"
+                            alt="Poster">
+                        <!-- /photo -->
+                        {% else %}
+                        <img loading="lazy" class="img-fluid" src="{{'assets/images/undraw_compose_music_ovo2.svg'|theme}}"
+                        alt="Poster">
+                        {% endif %}
+                        <!-- member social profile -->
+                        <div class="mask">
+                            <ul class="clearfix">
+                                <li><a href="{{ detailsPage|page({ (detailsUrlParameter): attribute(record, detailsKeyColumn) }) }}"><i class="tf-ion-ios-search-strong"></i></a></li>
+                            </ul>
+                        </div>
+                        <!-- /member social profile -->
+                    </div>
 
-        <ul class="record-list">
-            {% for event in events %}
-                <li>
-                    {{event.time_begin}}
-                    {# Use spaceless tag to remove spaces inside the A tag. #}
-                    {% spaceless %}
-                    <a href="evenement\{{event.id}}">{{ event.name }}</a>
-                    {% endspaceless %}
-                </li>
+                    <!-- member name & designation -->
+                    <div class="member-content">
+                        <h3><a href="{{ detailsPage|page({ (detailsUrlParameter): attribute(record, detailsKeyColumn) }) }}">{{ record.name }}</a></h3>
+                       <p> à
+                            {% for location in record.locations %}
+                            <a href="/lieu/{{location.slug}}">{{location.name}}</a>
+                            {% endfor%}
+                        
+                            le {{ record.time_begin|frenchDate('%e %B %Y') }} {{record.description|raw}}
+                        </p>
+                    </div>
+                    <!-- /member name & designation -->
+
+                </div>
+            </div>
+            <!-- end team member -->
             {% else %}
-                <li class="no-data">{{ 'No Event' }}</li>
-            {% endfor %}
-        </ul>
+            <li class="no-data">{{ noRecordsMessage }}</li>
+        {% endfor %}
 
-</div>
-
-<div>
-    {{events.render|raw}}
-</div>
-
-</section>
+        </div> <!-- End row -->
+    </div> <!-- End container -->
+</section> <!-- End section -->
