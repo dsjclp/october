@@ -9,7 +9,7 @@ use  Dlp\Events\Models\Event;
 
 function onStart()
 {
-$this['events'] = Event::where('public', '=', 1)->orderBy('time_begin','asc')->take(5)->get();
+$this['events'] = Event::where('public', '=', 1)->where('time_begin', '<', now())->orderBy('time_begin','desc')->take(15)->get();
 
 }
 ?>

@@ -69,7 +69,13 @@ class InscriptionForm extends ComponentBase
     }
 
 
-
+    public function onOpen(){
+        return ['#result' => $this->renderPartial(
+            'inscriptionform::update',
+            ['absences' => 'ABS',
+            'presences' => 'PRE',
+            ])]; 
+    }
 
     public function onSend(){
 
@@ -110,13 +116,16 @@ class InscriptionForm extends ComponentBase
             $inscription->instrument = Input::get('instrument');
             $inscription->position = Input::get('position');
             $inscription->save();
-            Flash::success('Inscription enregistrée, merci !');
+            //Flash::success('Inscription enregistrée, merci !');
             //return Redirect::back();
             $toto = Inscription::all();
+            $presences = Inscription::where('event_id', '=', Input::get('event'))->where('user_id', '=', Input::get('user'))->where('position', '=', '1')->get();
+            $absences = Inscription::where('event_id', '=', Input::get('event'))->where('user_id', '=', Input::get('user'))->where('position', '=', '0')->get();
 
             return ['#result' => $this->renderPartial(
                 'inscriptionform::update',
-                ['updateResult' => $toto
+                ['absences' => $absences,
+                'presences' => $presences,
                 ])]; 
         }
 

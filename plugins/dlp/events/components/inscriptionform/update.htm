@@ -1,3 +1,10 @@
-{% for inscription in updateResult %}
+Absences
+{% for inscription in absences %}
+<div>{{inscription.id}}</div>
+{% endfor %}
+
+<br>
+Présences
+{% for inscription in presences %}
 <div>{{inscription.id}}</div>
 {% endfor %}
